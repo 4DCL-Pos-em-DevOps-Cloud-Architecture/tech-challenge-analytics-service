@@ -147,6 +147,7 @@ def process_message(message):
         log.error(f"Erro inesperado ao processar {message['MessageId']}: {e}")
         # Não deleta a mensagem, tenta novamente
 
+ 
 def sqs_worker_loop():
     """ Loop principal do worker que ouve a fila SQS """
     log.info("Iniciando o worker SQS...")
@@ -171,7 +172,7 @@ def sqs_worker_loop():
                 
         except ClientError as e:
             log.error(f"Erro do Boto3 no loop principal do SQS: {e}")
-            time.sleep(10) # Pausa antes de tentar novamente
+            time.sleep(10)  # Pausa antes de tentar novamente
         except Exception as e:
             log.error(f"Erro inesperado no loop principal do SQS: {e}")
             time.sleep(10)
@@ -180,12 +181,17 @@ def sqs_worker_loop():
 
 app = Flask(__name__)
 
+
 @app.route('/health')
 def health():
     # Uma verificação de saúde real poderia checar a conexão com o DynamoDB/SQS
     return jsonify({"status": "ok"})
 
+
+
 # --- Inicialização ---
+
+
 
 def start_worker():
     """ Inicia o worker SQS em uma thread separada """
