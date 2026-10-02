@@ -2,4 +2,5 @@ Flask==3.0.3
 Werkzeug==3.0.3
 gunicorn==22.0.0
 python-dotenv==0.21.0
-boto3==1.26.50
+boto3==1.42.40
+urllib3==2.8.0
