@@ -103,3 +103,29 @@ INFO:Evento ... (Flag: enable-new-dashboard) salvo no DynamoDB.
 Vá até o console da AWS, abra o **DynamoDB**, selecione a tabela `ToggleMasterAnalytics` e clique em "Explore table items".
 
 Você verá os itens que o worker acabou de inserir.
+
+## Manifestos Kubernetes
+
+Os manifestos deste serviço estão em `k8s/`. O `analytics-service` é um worker interno, portanto não possui Ingress.
+
+Antes da aplicação, substitua os seguintes valores:
+
+| Placeholder | Descrição |
+|---|---|
+| `<REGISTRY_URL>` | URI do registro ECR, por exemplo `123456789012.dkr.ecr.us-east-1.amazonaws.com` |
+| `<URL_DA_FILA_SQS>` | URL da fila SQS consumida pelo serviço |
+| `<NOME_DA_TABELA_DYNAMODB>` | Nome da tabela DynamoDB de analytics |
+
+O Secret `aws-credentials` também deve existir no namespace `analytics-service`, com as credenciais necessárias para acessar o SQS e o DynamoDB. Não versione valores reais de Secrets no repositório.
+
+Aplicação dos recursos:
+
+```bash
+kubectl apply -f k8s/namespace.yaml
+kubectl apply -f k8s/config.yaml
+kubectl apply -f k8s/deployment.yaml
+kubectl apply -f k8s/service.yaml
+kubectl apply -f k8s/hpa.yaml
+```
+
+O health check pode ser acessado internamente em `http://analytics-service:8005/health`.
