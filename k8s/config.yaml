@@ -1,0 +1,9 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: analytics-config
+  namespace: analytics-service
+data:
+  AWS_REGION: us-east-1
+  AWS_SQS_URL: "<URL_DA_FILA_SQS>"
+  AWS_DYNAMODB_TABLE: "<NOME_DA_TABELA_DYNAMODB>"
